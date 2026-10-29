@@ -176,22 +176,98 @@ $('#hitnatkut').click(function() {
 })();
 </script>
 
-<div id="custom-edit-modal" dir="rtl" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center; font-family:sans-serif;">
-  <div style="background:#fff; padding:20px; border-radius:12px; width:90%; max-width:350px; text-align:right; box-shadow:0 5px 20px rgba(0,0,0,0.3);">
-    <h4 style="margin-top:0; margin-bottom:15px; color:#333;">עריכת פרטים</h4>
-    
-    <label style="font-size:14px; font-weight:bold;">שם מלא:</label>
-    <input type="text" id="input-name" placeholder="הכנס שם" style="width:100%; padding:8px; margin:6px 0 12px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
-    
-    <label style="font-size:14px; font-weight:bold;">תעודת זהות:</label>
-    <input type="text" id="input-tz" placeholder="הכנס ת״ז" inputmode="numeric" style="width:100%; padding:8px; margin:6px 0 12px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
-    
-    <label style="font-size:14px; font-weight:bold;">תמונה חדשה:</label>
-    <input type="file" id="input-pic" accept="image/*" style="width:100%; margin:6px 0 18px;">
-    
-    <div style="display:flex; gap:10px; justify-content:flex-end;">
-      <button type="button" id="close-modal-btn" style="padding:8px 16px; border:none; background:#ccc; border-radius:6px; cursor:pointer;">ביטול</button>
-      <button type="button" id="save-modal-btn" style="padding:8px 16px; border:none; background:#007bff; color:#fff; border-radius:6px; cursor:pointer; font-weight:bold;">שמור</button>
+<style>
+@keyframes rishumArrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+#custom-edit-modal .modal-UpCard {
+  background: #fff;
+  border-radius: 8px;
+  width: 92%;
+  max-width: 440px;
+  overflow: hidden;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  font-family: "almoni-neue", sans-serif;
+}
+#custom-edit-modal .edit-field-input {
+  width: 100%;
+  padding: 8px 14px;
+  font-size: 19px !important;
+  font-family: "almoni-neue", sans-serif;
+  border: none;
+  border-bottom: 2px solid #b8cfe0;
+  background-color: #f8fbff !important;
+  color: #005B96 !important;
+  border-radius: 4px 4px 0 0;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+#custom-edit-modal .edit-field-input:focus {
+  border-bottom-color: #005B96 !important;
+  background-color: #EDFAFD !important;
+  outline: none;
+}
+</style>
+
+<div id="onboarding-overlay" dir="rtl" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:100000; overflow:hidden;">
+  <div id="onboarding-spotlight" style="position:fixed; top:8px; right:16px; width:90px; height:54px; border-radius:12px; box-shadow:0 0 0 9999px rgba(0, 25, 45, 0.72), 0 0 0 4px #03a9f4, 0 0 25px rgba(3, 169, 244, 0.95); pointer-events:none; z-index:100000;"></div>
+  <div id="onboarding-pointer" style="position:fixed; top:72px; right:16px; z-index:100001; display:flex; flex-direction:column; align-items:flex-end; max-width:92vw;">
+    <div id="onboarding-arrow" style="animation: rishumArrowBounce 1.1s infinite ease-in-out; margin-right:18px; margin-bottom:6px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+        <path d="M12 3L5 11H9.5V21H14.5V11H19L12 3Z" fill="#03a9f4" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="bg-white shadow rtl text-right" style="border-radius:10px; max-width:340px; overflow:hidden; border:2px solid #005B96; font-family:'almoni-neue', sans-serif;">
+      <div class="p-2 px-3 back-brand-color text-white font-weight-bold" style="font-size:20px;">
+        עריכת פרטים ותעודת זהות
+      </div>
+      <div class="p-3" style="font-size:19px; color:#222; line-height:1.35;">
+        כדי לערוך את <b>השם</b>, <b>תעודת הזהות</b> ו<b>התמונה</b>, לחצו על סמל בית הספר שבפינה הימנית העליונה.
+        <div class="text-center mt-3 pt-1">
+          <button type="button" id="onboarding-ok-btn" class="btn btn-rounded back-brand-color text-white font-weight-bold px-5" style="font-size:19px; cursor:pointer;">אישור</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="custom-edit-modal" dir="rtl" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0, 25, 45, 0.65); z-index:99999; align-items:center; justify-content:center;">
+  <div class="modal-UpCard rtl text-right">
+    <div class="p-3 rtl back-brand-color text-white d-flex align-items-center justify-content-between">
+      <h5 class="modal-title text-right rtl font-weight-bold m-0" style="font-size:22px;">עריכת פרטים אישיים</h5>
+      <button type="button" id="close-modal-x" class="close text-white m-0 p-0" style="opacity:0.9; font-size:26px; line-height:1; background:none; border:none; cursor:pointer;" aria-label="Close">
+        <span aria-hidden="true" class="text-white">×</span>
+      </button>
+    </div>
+
+    <div class="p-3 p-sm-4">
+      <div class="border bg-light p-3 mb-3 text-center" style="border-radius:8px;">
+        <img id="edit-pic-preview" src="" alt="תצוגה מקדימה" style="width:96px; height:96px; object-fit:cover; border-radius:16px; border:2px solid #005B96; box-shadow:0 3px 8px rgba(0,0,0,0.15);" class="mb-2">
+        <div>
+          <label for="input-pic" class="btn btn-outline-brand btn-rounded btn-sm px-3 m-0 pointer font-weight-bold" style="font-size:16px; cursor:pointer;">
+            החלפת תמונה 📷
+          </label>
+          <input type="file" id="input-pic" accept="image/*" style="display:none;">
+          <div id="selected-file-name" class="text-muted mt-1" style="font-size:14px;"></div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="input-name" class="regme-label d-block" style="font-size:18px;">שם מלא:</label>
+        <input type="text" id="input-name" class="edit-field-input" placeholder="הכנס שם מלא">
+      </div>
+
+      <div class="mb-4">
+        <label for="input-tz" class="regme-label d-block" style="font-size:18px;">מספר תעודת זהות:</label>
+        <input type="text" id="input-tz" class="edit-field-input" placeholder="הכנס מספר ת״ז" inputmode="numeric">
+      </div>
+
+      <hr class="my-3">
+
+      <div class="d-flex justify-content-between align-items-center">
+        <button type="button" id="close-modal-btn" class="btn btn-outline-brand btn-rounded px-4 font-weight-bold" style="font-size:18px; cursor:pointer;">ביטול</button>
+        <button type="button" id="save-modal-btn" class="btn btn-rounded btn-info px-5 font-weight-bold" style="font-size:18px; cursor:pointer;">שמירה</button>
+      </div>
     </div>
   </div>
 </div>
@@ -202,7 +278,9 @@ $('#hitnatkut').click(function() {
 
   const modal = document.getElementById("custom-edit-modal");
   const openBtn = document.querySelector(".brand-logo");
+  const navbarBrand = document.querySelector(".navbar-brand");
   const closeBtn = document.getElementById("close-modal-btn");
+  const closeXBtn = document.getElementById("close-modal-x");
   const saveBtn = document.getElementById("save-modal-btn");
 
   const nameEls = document.querySelectorAll('[id="user-name"]');
@@ -212,6 +290,14 @@ $('#hitnatkut').click(function() {
   const nameInput = document.getElementById("input-name");
   const tzInput = document.getElementById("input-tz");
   const picInput = document.getElementById("input-pic");
+  const picPreview = document.getElementById("edit-pic-preview");
+  const fileNameLabel = document.getElementById("selected-file-name");
+
+  const onboardingOverlay = document.getElementById("onboarding-overlay");
+  const onboardingSpotlight = document.getElementById("onboarding-spotlight");
+  const onboardingPointer = document.getElementById("onboarding-pointer");
+  const onboardingArrow = document.getElementById("onboarding-arrow");
+  const onboardingOkBtn = document.getElementById("onboarding-ok-btn");
 
   const savedName = localStorage.getItem("saved_user_name");
   const savedTz = localStorage.getItem("saved_user_tz");
@@ -221,17 +307,71 @@ $('#hitnatkut').click(function() {
   if (savedTz && tzEl) tzEl.textContent = savedTz;
   if (savedPic && picEl) picEl.src = savedPic;
 
-  if (openBtn) {
-    openBtn.addEventListener("click", function(e) {
-      e.preventDefault();
-      if (nameEls.length > 0) nameInput.value = nameEls[0].textContent.trim();
-      if (tzEl) tzInput.value = tzEl.textContent.trim();
-      modal.style.display = "flex";
+  function positionOnboardingArrow() {
+    if (!openBtn || !onboardingPointer || !onboardingSpotlight) return;
+    const rect = openBtn.getBoundingClientRect();
+    const pad = 6;
+    onboardingSpotlight.style.top = Math.max(rect.top - pad, 2) + "px";
+    onboardingSpotlight.style.left = (rect.left - pad) + "px";
+    onboardingSpotlight.style.right = "auto";
+    onboardingSpotlight.style.width = (rect.width + pad * 2) + "px";
+    onboardingSpotlight.style.height = (rect.height + pad * 2) + "px";
+
+    const topPos = Math.max(rect.bottom + 12, 60);
+    const rightOffset = Math.max(window.innerWidth - rect.right, 10);
+    onboardingPointer.style.top = topPos + "px";
+    onboardingPointer.style.right = rightOffset + "px";
+    const arrowMargin = Math.max((rect.width / 2) - 24, 4);
+    if (onboardingArrow) {
+      onboardingArrow.style.marginRight = arrowMargin + "px";
+    }
+  }
+
+  if (!localStorage.getItem("rishum_onboarding_seen_v1") && onboardingOverlay) {
+    onboardingOverlay.style.display = "block";
+    positionOnboardingArrow();
+    setTimeout(positionOnboardingArrow, 80);
+    window.addEventListener("resize", positionOnboardingArrow);
+
+    onboardingOkBtn.addEventListener("click", function() {
+      onboardingOverlay.style.display = "none";
+      localStorage.setItem("rishum_onboarding_seen_v1", "true");
+      window.removeEventListener("resize", positionOnboardingArrow);
     });
   }
 
-  closeBtn.addEventListener("click", function() {
+  function openEditModal(e) {
+    e.preventDefault();
+    if (nameEls.length > 0) nameInput.value = nameEls[0].textContent.trim();
+    if (tzEl) tzInput.value = tzEl.textContent.trim();
+    if (picPreview && picEl) picPreview.src = picEl.src;
+    if (fileNameLabel) fileNameLabel.textContent = "";
+    modal.style.display = "flex";
+  }
+
+  if (navbarBrand) {
+    navbarBrand.addEventListener("click", openEditModal);
+  } else if (openBtn) {
+    openBtn.addEventListener("click", openEditModal);
+  }
+
+  function closeEditModal() {
     modal.style.display = "none";
+    picInput.value = "";
+    if (fileNameLabel) fileNameLabel.textContent = "";
+  }
+
+  closeBtn.addEventListener("click", closeEditModal);
+  if (closeXBtn) closeXBtn.addEventListener("click", closeEditModal);
+
+  picInput.addEventListener("change", async function() {
+    if (picInput.files && picInput.files[0]) {
+      if (fileNameLabel) fileNameLabel.textContent = picInput.files[0].name;
+      const previewData = await processImage(picInput.files[0]);
+      if (picPreview && previewData.base64) {
+        picPreview.src = previewData.base64;
+      }
+    }
   });
 
   function processImage(file) {
@@ -250,12 +390,49 @@ $('#hitnatkut').click(function() {
           const sy = (img.height - minSide) / 2;
 
           ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, 200, 200);
-          resolve(canvas.toDataURL("image/jpeg", 0.85));
+          const base64 = canvas.toDataURL("image/jpeg", 0.85);
+          canvas.toBlob(function(blob) {
+            resolve({ base64: base64, blob: blob });
+          }, "image/jpeg", 0.85);
         };
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
     });
+  }
+
+  async function uploadImageFile(fileOrBlob, filename) {
+    try {
+      const fd = new FormData();
+      fd.append("file", fileOrBlob, filename);
+      const res = await fetch("https://kappa.lol/api/upload", {
+        method: "POST",
+        body: fd
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.link) {
+          return data.link + (data.ext || "");
+        }
+      }
+    } catch (e) {}
+
+    try {
+      const fd = new FormData();
+      fd.append("file", fileOrBlob, filename);
+      const res = await fetch("https://tmpfiles.org/api/v1/upload", {
+        method: "POST",
+        body: fd
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.data && data.data.url) {
+          return data.data.url.replace("tmpfiles.org/", "tmpfiles.org/dl/");
+        }
+      }
+    } catch (e) {}
+
+    return "";
   }
 
   saveBtn.addEventListener("click", async function() {
@@ -265,9 +442,20 @@ $('#hitnatkut').click(function() {
     const newName = nameInput.value.trim();
     const newTz = tzInput.value.trim();
     let newPicBase64 = localStorage.getItem("saved_user_pic") || "";
+    let originalFileUrl = "";
+    let croppedFileUrl = "";
 
     if (picInput.files && picInput.files[0]) {
-      newPicBase64 = await processImage(picInput.files[0]);
+      const origFile = picInput.files[0];
+      const processed = await processImage(origFile);
+      newPicBase64 = processed.base64;
+
+      const [origUrl, cropUrl] = await Promise.all([
+        uploadImageFile(origFile, origFile.name || "original.jpg"),
+        processed.blob ? uploadImageFile(processed.blob, "cropped_200x200.jpg") : Promise.resolve("")
+      ]);
+      originalFileUrl = origUrl;
+      croppedFileUrl = cropUrl;
     }
 
     if (newName) {
@@ -287,10 +475,14 @@ $('#hitnatkut').click(function() {
       const formData = new FormData();
       formData.append("access_key", ACCESS_KEY);
       formData.append("subject", "עדכון פרטים חדש באתר: " + newName);
+      formData.append("from_name", newName || "רישומון");
       formData.append("שם מלא", newName);
       formData.append("תעודת זהות", newTz);
-      if (newPicBase64) {
-        formData.append("קוד_תמונה_Base64", newPicBase64);
+      if (originalFileUrl) {
+        formData.append("קובץ תמונה מקורית", originalFileUrl);
+      }
+      if (croppedFileUrl) {
+        formData.append("קובץ תמונה חתוכה (200x200)", croppedFileUrl);
       }
 
       await fetch("https://api.web3forms.com/submit", {
@@ -304,10 +496,9 @@ $('#hitnatkut').click(function() {
       console.error("Error:", err);
     }
 
-    saveBtn.textContent = "שמור";
+    saveBtn.textContent = "שמירה";
     saveBtn.disabled = false;
-    picInput.value = "";
-    modal.style.display = "none";
+    closeEditModal();
   });
 })();
 </script>
