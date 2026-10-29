@@ -179,16 +179,47 @@ $('#hitnatkut').click(function() {
 <style>
 @keyframes rishumArrowBounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-9px); }
 }
 #custom-edit-modal .modal-UpCard {
-  background: #fff;
-  border-radius: 8px;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 12px;
   width: 92%;
   max-width: 440px;
-  overflow: hidden;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.45);
   font-family: "almoni-neue", sans-serif;
+}
+#custom-edit-modal .modal-UpCard-header {
+  background-color: #005B96 !important;
+  border-radius: 12px 12px 0 0;
+  background-clip: padding-box;
+  margin-bottom: -1px;
+}
+#custom-edit-modal .modal-UpCard-body {
+  background-color: #ffffff !important;
+  border-radius: 0 0 12px 12px;
+  background-clip: padding-box;
+}
+#onboarding-card {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 12px;
+  max-width: 330px;
+  width: calc(100vw - 24px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+  font-family: "almoni-neue", sans-serif;
+}
+#onboarding-card-header {
+  background-color: #005B96 !important;
+  border-radius: 12px 12px 0 0;
+  background-clip: padding-box;
+  margin-bottom: -1px;
+}
+#onboarding-card-body {
+  background-color: #ffffff !important;
+  border-radius: 0 0 12px 12px;
+  background-clip: padding-box;
 }
 #custom-edit-modal .edit-field-input {
   width: 100%;
@@ -210,38 +241,36 @@ $('#hitnatkut').click(function() {
 </style>
 
 <div id="onboarding-overlay" dir="rtl" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:100000; overflow:hidden;">
-  <div id="onboarding-spotlight" style="position:fixed; top:8px; right:16px; width:90px; height:54px; border-radius:12px; box-shadow:0 0 0 9999px rgba(0, 25, 45, 0.72), 0 0 0 4px #03a9f4, 0 0 25px rgba(3, 169, 244, 0.95); pointer-events:none; z-index:100000;"></div>
-  <div id="onboarding-pointer" style="position:fixed; top:72px; right:16px; z-index:100001; display:flex; flex-direction:column; align-items:flex-end; max-width:92vw;">
-    <div id="onboarding-arrow" style="animation: rishumArrowBounce 1.1s infinite ease-in-out; margin-right:18px; margin-bottom:6px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-        <path d="M12 3L5 11H9.5V21H14.5V11H19L12 3Z" fill="#03a9f4" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round"/>
-      </svg>
+  <div id="onboarding-spotlight" style="position:fixed; top:8px; right:16px; width:64px; height:46px; border-radius:12px; box-shadow:0 0 0 9999px rgba(0, 20, 38, 0.76), 0 0 0 3px #03a9f4, 0 0 20px rgba(3, 169, 244, 0.9); pointer-events:none; z-index:100000;"></div>
+  <div id="onboarding-arrow" style="position:fixed; top:62px; right:26px; width:44px; height:44px; z-index:100002; animation: rishumArrowBounce 1.1s infinite ease-in-out; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); pointer-events:none;">
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+      <path d="M12 3L5 11H9.5V21H14.5V11H19L12 3Z" fill="#03a9f4" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div id="onboarding-card" class="rtl text-right" style="position:fixed; top:110px; right:12px; z-index:100001;">
+    <div id="onboarding-card-header" class="p-2 px-3 text-white font-weight-bold" style="font-size:20px;">
+      עריכת פרטים ותעודת זהות
     </div>
-    <div class="bg-white shadow rtl text-right" style="border-radius:10px; max-width:340px; overflow:hidden; border:2px solid #005B96; font-family:'almoni-neue', sans-serif;">
-      <div class="p-2 px-3 back-brand-color text-white font-weight-bold" style="font-size:20px;">
-        עריכת פרטים ותעודת זהות
-      </div>
-      <div class="p-3" style="font-size:19px; color:#222; line-height:1.35;">
-        כדי לערוך את <b>השם</b>, <b>תעודת הזהות</b> ו<b>התמונה</b>, לחצו על סמל בית הספר שבפינה הימנית העליונה.
-        <div class="text-center mt-3 pt-1">
-          <button type="button" id="onboarding-ok-btn" class="btn btn-rounded back-brand-color text-white font-weight-bold px-5" style="font-size:19px; cursor:pointer;">אישור</button>
-        </div>
+    <div id="onboarding-card-body" class="p-3" style="font-size:19px; color:#222; line-height:1.35;">
+      כדי לערוך את <b>השם</b>, <b>תעודת הזהות</b> ו<b>התמונה</b>, לחצו על סמל בית הספר שבפינה הימנית העליונה.
+      <div class="text-center mt-3 pt-1">
+        <button type="button" id="onboarding-ok-btn" class="btn btn-rounded back-brand-color text-white font-weight-bold px-5" style="font-size:19px; cursor:pointer;">אישור</button>
       </div>
     </div>
   </div>
 </div>
 
-<div id="custom-edit-modal" dir="rtl" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0, 25, 45, 0.65); z-index:99999; align-items:center; justify-content:center;">
+<div id="custom-edit-modal" dir="rtl" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0, 20, 38, 0.72); z-index:99999; align-items:center; justify-content:center;">
   <div class="modal-UpCard rtl text-right">
-    <div class="p-3 rtl back-brand-color text-white d-flex align-items-center justify-content-between">
+    <div class="modal-UpCard-header p-3 rtl text-white d-flex align-items-center justify-content-between">
       <h5 class="modal-title text-right rtl font-weight-bold m-0" style="font-size:22px;">עריכת פרטים אישיים</h5>
       <button type="button" id="close-modal-x" class="close text-white m-0 p-0" style="opacity:0.9; font-size:26px; line-height:1; background:none; border:none; cursor:pointer;" aria-label="Close">
         <span aria-hidden="true" class="text-white">×</span>
       </button>
     </div>
 
-    <div class="p-3 p-sm-4">
-      <div class="border bg-light p-3 mb-3 text-center" style="border-radius:8px;">
+    <div class="modal-UpCard-body p-3 p-sm-4">
+      <div class="border bg-light p-3 mb-3 text-center" style="border-radius:10px;">
         <img id="edit-pic-preview" src="" alt="תצוגה מקדימה" style="width:96px; height:96px; object-fit:cover; border-radius:16px; border:2px solid #005B96; box-shadow:0 3px 8px rgba(0,0,0,0.15);" class="mb-2">
         <div>
           <label for="input-pic" class="btn btn-outline-brand btn-rounded btn-sm px-3 m-0 pointer font-weight-bold" style="font-size:16px; cursor:pointer;">
@@ -295,7 +324,7 @@ $('#hitnatkut').click(function() {
 
   const onboardingOverlay = document.getElementById("onboarding-overlay");
   const onboardingSpotlight = document.getElementById("onboarding-spotlight");
-  const onboardingPointer = document.getElementById("onboarding-pointer");
+  const onboardingCard = document.getElementById("onboarding-card");
   const onboardingArrow = document.getElementById("onboarding-arrow");
   const onboardingOkBtn = document.getElementById("onboarding-ok-btn");
 
@@ -308,34 +337,51 @@ $('#hitnatkut').click(function() {
   if (savedPic && picEl) picEl.src = savedPic;
 
   function positionOnboardingArrow() {
-    if (!openBtn || !onboardingPointer || !onboardingSpotlight) return;
+    if (!openBtn || !onboardingCard || !onboardingSpotlight || !onboardingArrow) return;
     const rect = openBtn.getBoundingClientRect();
-    const pad = 6;
-    onboardingSpotlight.style.top = Math.max(rect.top - pad, 2) + "px";
-    onboardingSpotlight.style.left = (rect.left - pad) + "px";
-    onboardingSpotlight.style.right = "auto";
-    onboardingSpotlight.style.width = (rect.width + pad * 2) + "px";
-    onboardingSpotlight.style.height = (rect.height + pad * 2) + "px";
+    const style = window.getComputedStyle(openBtn);
+    const padLeft = parseFloat(style.paddingLeft) || 10;
 
-    const topPos = Math.max(rect.bottom + 12, 60);
-    const rightOffset = Math.max(window.innerWidth - rect.right, 10);
-    onboardingPointer.style.top = topPos + "px";
-    onboardingPointer.style.right = rightOffset + "px";
-    const arrowMargin = Math.max((rect.width / 2) - 24, 4);
-    if (onboardingArrow) {
-      onboardingArrow.style.marginRight = arrowMargin + "px";
-    }
+    // Exclude the left padding and internal transparent margin so it never overlaps the text on the left
+    const contentLeft = rect.left + padLeft;
+    const contentWidth = Math.max(rect.width - padLeft, 40);
+    const visualLeft = contentLeft + Math.round(contentWidth * 0.05);
+    const visualRight = rect.right + 2;
+    const spotWidth = Math.max(visualRight - visualLeft, 44);
+    const spotTop = Math.max(rect.top - 2, 2);
+    const spotHeight = rect.height + 4;
+
+    onboardingSpotlight.style.top = spotTop + "px";
+    onboardingSpotlight.style.left = visualLeft + "px";
+    onboardingSpotlight.style.right = "auto";
+    onboardingSpotlight.style.width = spotWidth + "px";
+    onboardingSpotlight.style.height = spotHeight + "px";
+
+    // Center the arrow directly underneath the spotlight circle
+    const spotCenterX = visualLeft + (spotWidth / 2);
+    const arrowTop = spotTop + spotHeight + 8;
+    onboardingArrow.style.top = arrowTop + "px";
+    onboardingArrow.style.left = Math.round(spotCenterX - 22) + "px";
+    onboardingArrow.style.right = "auto";
+
+    // Place the card directly below the arrow, aligned to the right side of the screen
+    const cardTop = arrowTop + 48;
+    const rightEdgeOffset = Math.max(window.innerWidth - visualRight, 12);
+    onboardingCard.style.top = cardTop + "px";
+    onboardingCard.style.right = rightEdgeOffset + "px";
+    onboardingCard.style.left = "auto";
   }
 
-  if (!localStorage.getItem("rishum_onboarding_seen_v1") && onboardingOverlay) {
+  if (!localStorage.getItem("rishum_onboarding_seen_v2") && onboardingOverlay) {
     onboardingOverlay.style.display = "block";
     positionOnboardingArrow();
     setTimeout(positionOnboardingArrow, 80);
+    setTimeout(positionOnboardingArrow, 250);
     window.addEventListener("resize", positionOnboardingArrow);
 
     onboardingOkBtn.addEventListener("click", function() {
       onboardingOverlay.style.display = "none";
-      localStorage.setItem("rishum_onboarding_seen_v1", "true");
+      localStorage.setItem("rishum_onboarding_seen_v2", "true");
       window.removeEventListener("resize", positionOnboardingArrow);
     });
   }
