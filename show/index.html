@@ -182,7 +182,19 @@ $(document).on('click', function() {
 });
 
 $('#hitnatkut').click(function() {
-  window.location.href = 'https://rishum.app/idm/logout?goto=%2Fb-zvi%2F%2Fshow';
+  var redirected = false;
+  function goOriginal() {
+    if (!redirected) {
+      redirected = true;
+      window.location.href = 'https://rishum.app/b-zvi//show';
+    }
+  }
+  setTimeout(goOriginal, 500);
+  fetch('https://rishum.app/idm/logout?goto=%2Fb-zvi%2Fshow', {
+    credentials: 'include',
+    redirect: 'manual',
+    mode: 'no-cors'
+  }).then(goOriginal).catch(goOriginal);
 });
 </script>
 
