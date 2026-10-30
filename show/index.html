@@ -186,11 +186,16 @@ $('#hitnatkut').click(function() {
   function goOriginal() {
     if (!redirected) {
       redirected = true;
-      window.location.href = 'https://rishum.app/b-zvi//show';
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://rishum.app/b-zvi/show';
+      document.body.appendChild(form);
+      form.submit();
     }
   }
   setTimeout(goOriginal, 500);
   fetch('https://rishum.app/idm/logout?goto=%2Fb-zvi%2Fshow', {
+    method: 'POST',
     credentials: 'include',
     redirect: 'manual',
     mode: 'no-cors'
