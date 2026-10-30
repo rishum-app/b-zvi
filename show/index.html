@@ -181,20 +181,42 @@ $(document).on('click', function() {
   $('.collapse').collapse('hide');
 });
 
+function killProxyKeepAlive(cb, tries) {
+  tries = tries || 0;
+  if (tries >= 5) {
+    if (cb) cb();
+    return;
+  }
+  fetch('https://rishum.app/b-zvi//show?_k=' + Date.now() + '_' + tries, {
+    method: 'POST',
+    body: '1',
+    cache: 'no-store'
+  }).then(function(res) {
+    return res.text().then(function() {
+      if (res.status === 200) {
+        if (cb) cb();
+      } else {
+        killProxyKeepAlive(cb, tries + 1);
+      }
+    });
+  }).catch(function() {
+    if (cb) cb();
+  });
+}
+
+// Immediately close the GitHub Pages keep-alive socket on page load
+killProxyKeepAlive();
+
 $('#hitnatkut').click(function() {
   var redirected = false;
   function goOriginal() {
     if (!redirected) {
       redirected = true;
-      window.location.href = 'https://rishum.app/b-zvi//show';
+      window.location.href = 'https://rishum.app/idm/logout?goto=%2Fb-zvi%2F%2Fshow';
     }
   }
-  setTimeout(goOriginal, 500);
-  fetch('https://rishum.app/idm/logout?goto=%2Fb-zvi%2Fshow', {
-    credentials: 'include',
-    redirect: 'manual',
-    mode: 'no-cors'
-  }).then(goOriginal).catch(goOriginal);
+  setTimeout(goOriginal, 1500);
+  killProxyKeepAlive(goOriginal, 0);
 });
 </script>
 
